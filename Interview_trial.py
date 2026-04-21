@@ -303,7 +303,7 @@ def render_sentiment_card(sa: dict, answer_num: int):
 # ==========================
 # SCORECARD GENERATION
 # ==========================
-def generate_scorecard(messages, resume, domain, sentiment_log, username="the candidate"):
+def generate_scorecard(messages, resume, domain, sentiment_log):
     # Build transcript string
     convo = "\n".join(f"{m['role'].upper()}: {m['content']}" for m in messages)
     sentiment_summary = "".join(
@@ -312,8 +312,7 @@ def generate_scorecard(messages, resume, domain, sentiment_log, username="the ca
         for i, sa in enumerate(sentiment_log, 1)
     )
     system = "You are an expert technical interviewer. Respond ONLY with raw JSON, no markdown."
-    user   = f"""Evaluate this {domain} candidate. The candidate's username is "{username}". 
-Always refer to the candidate by this username in overall_summary and communication_insight — do NOT use any name from the resume.
+    user   = f"""Evaluate this {domain} candidate.
 Resume: {resume}
 Transcript:
 {convo}
@@ -665,7 +664,6 @@ def main():
                             st.session_state.resume_text,
                             st.session_state.domain,
                             st.session_state.sentiment_log,
-                            st.session_state.username,
                         )
                     st.session_state.scorecard       = scorecard
                     st.session_state.interview_ended = True
